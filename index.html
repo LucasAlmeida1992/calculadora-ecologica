@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pegada Ecológica</title>
+    
+    <!-- 1. Carregando o Tailwind CSS (Framework de estilo) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Configurando o tema (fonte Inter) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+    
+    <!-- 3. Vinculando seu arquivo de estilo personalizado -->
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body class="font-sans antialiased min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-2xl bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-100">
+
+        <!-- Cabeçalho -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-green-700">Calculadora de Pegada Ecológica</h1>
+            <p class="text-lg text-gray-600 mt-2">Descubra o seu impacto no planeta com este quiz.</p>
+        </header>
+
+        <!-- Formulário do Quiz -->
+        <form id="quizForm" class="space-y-8">
+
+            <!-- Pergunta 1: Transporte -->
+            <div class="question-block">
+                <label for="transporte" class="block text-xl font-semibold text-gray-800 mb-3">
+                    1. Qual é o seu principal meio de transporte diário?
+                </label>
+                <select id="transporte" name="transporte" class="w-full p-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="10">Carro (gasolina/diesel) como motorista</option>
+                    <option value="8">Carro (elétrico/híbrido)</option>
+                    <option value="5">Transporte Público (ônibus/metrô)</option>
+                    <option value="1">Bicicleta ou A pé</option>
+                </select>
+            </div>
+
+            <!-- Pergunta 2: Dieta -->
+            <div class="question-block">
+                <label for="dieta" class="block text-xl font-semibold text-gray-800 mb-3">
+                    2. Com que frequência você consome carne vermelha?
+                </label>
+                <select id="dieta" name="dieta" class="w-full p-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="10">Diariamente (ou quase)</option>
+                    <option value="7">Algumas vezes por semana</option>
+                    <option value="4">Raramente</option>
+                    <option value="1">Nunca (vegetariano/vegano)</option>
+                </select>
+            </div>
+
+            <!-- Pergunta 3: Energia -->
+            <div class="question-block">
+                <label for="energia" class="block text-xl font-semibold text-gray-800 mb-3">
+                    3. Você toma medidas para economizar energia em casa? (apagar luzes, usar lâmpadas LED, etc.)
+                </label>
+                <select id="energia" name="energia" class="w-full p-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="3">Sempre, sou muito consciente</option>
+                    <option value="6">Às vezes, quando lembro</option>
+                    <option value="10">Não muito</option>
+                </select>
+            </div>
+            
+            <!-- Pergunta 4: Resíduos -->
+            <div class="question-block">
+                <label for="residuos" class="block text-xl font-semibold text-gray-800 mb-3">
+                    4. Você separa o lixo para reciclagem?
+                </label>
+                <select id="residuos" name="residuos" class="w-full p-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="2">Sim, tudo e sempre</option>
+                    <option value="5">Às vezes / O que dá</option>
+                    <option value="10">Não, não tenho esse costume</option>
+                </select>
+            </div>
+
+            <!-- Botão de Envio -->
+            <button type="button" id="calculateButton" class="w-full bg-green-600 text-white text-xl font-bold p-4 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-transform transform hover:scale-[1.02]">
+                Calcular minha Pegada
+            </button>
+
+        </form>
+
+        <!-- Seção de Resultados (inicialmente oculta) -->
+        <div id="resultsSection" class="hidden mt-10 p-6 bg-green-50 border-2 border-green-200 rounded-lg text-center">
+            <h2 class="text-2xl font-bold text-green-800 mb-3">Sua Pontuação de Pegada Ecológica:</h2>
+            <p id="score" class="text-5xl font-extrabold text-green-600 mb-4">0</p>
+            <p id="message" class="text-lg text-gray-700"></p>
+            
+            <!-- Novo Container para as Dicas -->
+            <div id="tips" class="text-left mt-6 space-y-4 text-gray-700">
+                <!-- O JavaScript vai inserir o conteúdo aqui -->
+            </div>
+            
+            <button id="resetButton" class="mt-8 bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">
+                Refazer o teste
+            </button>
+            
+        </div> <!-- Fim da resultsSection -->
+
+    </div> <!-- Fim do container principal -->
+
+    <!-- 4. Vinculando seu arquivo de lógica (JavaScript) -->
+    <!-- O "defer" garante que o script só rode após o HTML ser carregado -->
+    <script src="script.js" defer></script>
+
+</body>
+</html>
