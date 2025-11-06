@@ -19,11 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const residuosScore = parseInt(document.getElementById('residuos').value);
         
         // Calcular a pontuação total
-        // Pontuação "crua" (max 40)
+        // Pontuação "crua" (min 7, max 40)
         const rawScore = transporteScore + dietaScore + energiaScore + residuosScore;
-        // Normalizar a pontuação para uma escala de 0-100 (onde 100 é o pior)
-        // (100 / 40) = 2.5
-        const totalScore = Math.round(rawScore * 2.5);
+        
+        // Mapear o intervalo [7, 40] para o intervalo [0, 100]
+        // Onde 0 é a melhor pontuação (min) e 100 é a pior (max)
+        // Fórmula: ((valor - minA) / (maxA - minA)) * (maxB - minB) + minB
+        // ((rawScore - 7) / (40 - 7)) * (100 - 0) + 0
+        const totalScore = Math.round(((rawScore - 7) / 33) * 100);
 
         // Exibir a pontuação
         scoreEl.textContent = totalScore;
@@ -41,48 +44,50 @@ document.addEventListener('DOMContentLoaded', () => {
         let hasHighImpactAreas = false;
 
         // 1. Checar Transporte (Se escolheu carro)
-        if (transporteScore > 7) {
+        if (transporteScore > 7) { // Captura 8 e 10
             tipsHTML += '<li><strong>Transporte:</strong> Vimos que seu principal transporte é o carro. Tente combinar viagens ou usar transporte público/bicicleta uma vez por semana.</li>';
             hasHighImpactAreas = true;
         }
 
         // 2. Checar Dieta (Se come carne diariamente)
-        if (dietaScore > 7) {
+        if (dietaScore > 7) { // Captura 10
             tipsHTML += '<li><strong>Dieta:</strong> O consumo frequente de carne vermelha tem um impacto alto. Tente experimentar um "dia sem carne" para começar.</li>';
             hasHighImpactAreas = true;
         }
 
         // 3. Checar Energia (Se não economiza)
-        if (energiaScore > 7) {
+        if (energiaScore > 6) { // Captura 10 (era > 7, mudei para > 6 para pegar 10)
             tipsHTML += '<li><strong>Energia:</strong> Parece que há espaço para economizar energia. Desligar luzes e aparelhos da tomada (em vez de standby) já ajuda muito.</li>';
             hasHighImpactAreas = true;
         }
 
         // 4. Checar Resíduos (Se não recicla)
-        if (residuosScore > 7) {
+        if (residuosScore > 5) { // Captura 10 (era > 7, mudei para > 5 para pegar 10)
             tipsHTML += '<li><strong>Resíduos:</strong> Vimos que você não recicla. Começar é mais fácil do que parece! Tente separar o lixo "seco" (plástico, papel, metal) do "úmido" (restos de comida).</li>';
             hasHighImpactAreas = true;
         }
 
-        // Se nenhuma área tiver alto impacto, dê parabéns
-        if (!hasHighImpactAreas && totalScore < 90) { // Adicionamos um bônus se a pessoa for bem
-             tipsHTML += '<li>Parabéns! Seus hábitos já são de baixo impacto em todas as áreas. Continue assim e inspire outras pessoas!</li>';
+        // Se o score for 0, dê parabéns
+        if (totalScore === 0) { 
+             tipsHTML += '<li>Parabéns! Sua pontuação é 0. Você é um exemplo e seus hábitos são de baixíssimo impacto em todas as áreas. Continue assim!</li>';
+        } else if (!hasHighImpactAreas && totalScore < 50) { // Se não tem áreas graves e a pontuação é boa
+             tipsHTML += '<li>Muito bem! Você não possui áreas de impacto "vermelho" (as mais graves). Suas dicas são focadas em otimização.</li>';
         }
         
         // Fecha a lista de dicas
         tipsHTML += '</ul>';
         
         // --- Lógica de Mensagem Geral e Cor (baseada no totalScore 0-100) ---
-        if (totalScore <= 38) { // Era 15 (38 = 15 * 2.5)
+        if (totalScore <= 25) { // 0-25
             message = "Uau! Sua pegada é muito baixa. Você é um exemplo a ser seguido!";
             scoreEl.classList.add('text-green-600'); // Cor Verde
-        } else if (totalScore <= 63) { // Era 25 (63 = 25 * 2.5)
+        } else if (totalScore <= 50) { // 26-50
             message = "Sua pegada é baixa. Você já faz bastante, mas sempre há como melhorar.";
             scoreEl.classList.add('text-yellow-600'); // Cor Amarelo
-        } else if (totalScore <= 88) { // Era 35 (88 = 35 * 2.5)
+        } else if (totalScore <= 75) { // 51-75
             message = "Sua pegada é média. Você está no caminho certo. Foque nas dicas abaixo!";
             scoreEl.classList.add('text-orange-600'); // Cor Laranja
-        } else { // Acima de 88 (até 100)
+        } else { // 76-100
             message = "Sua pegada é alta. Esta é uma ótima oportunidade para repensar alguns hábitos.";
             scoreEl.classList.add('text-red-600'); // Cor Vermelho
         }
